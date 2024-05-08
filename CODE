@@ -1,0 +1,47 @@
+#importing modules
+import pandas as pd
+import numpy as np
+import seaborn assns
+#Reading dataset(heart.csv)
+df=pd.read_csv('heart.csv')
+#printing startting instances of data set
+df.head()
+#visualizing how many persons have heartdisease based on gender using heartdisease dataset
+sns.countplot(x='sex',hue='target',data=df)
+#visualizing how many persons have heart disease based on type of chest pain
+sns.countplot(x='cp',hue='target',data=df)
+#preprocessing data i.e. finding null values;
+df.isna().sum()
+#if we have null values we drop them using following command
+#df.dropna()
+28
+x=df[['age','sex','trestbps','chol','cp']]
+y=df['target']
+x.shape,y.shape
+# spliting data for trainig and testing
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(x,y,test_size=0.3, random_state=100)
+#training the data and predicting accuracy using logistic regression
+from sklearn.linear_model import LogisticRegression
+logreg =LogisticRegression(class_weight='balanced')
+sd=logreg.fit(X_train,y_train)
+sd.score(X_train,y_train)
+#a = sd.predict(X_test)
+#d_log = pd.DataFrame(data=a)
+#d_log.rename(index=str, columns={0:"y_log"})
+logreg.score(X_test,y_test)
+#d_log
+#testing against new samples
+a=np.array([63,1,3,145,233])
+b=a.reshape(1,5)
+df=pd.DataFrame(b)
+df. shape
+#predicting whether a person have heart disease or not against new sample
+sd.predict(df)
+#creating pickle module
+import pickle
+pickle.dump(sd,open('heart1.pk','wb'))
+#training the data and predicting accuracy using Random forest
+from sklearn.ensemble import RandomForestClassifier
+rf = RandomForestClassifier().fit(X_train,y_train)
+rf.score(X_train,y_train)
